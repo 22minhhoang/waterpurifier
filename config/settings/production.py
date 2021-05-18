@@ -135,6 +135,7 @@ ADMIN_URL = env("DJANGO_ADMIN_URL")
 # ------------------------------------------------------------------------------
 # https://github.com/antonagestam/collectfast#installation
 INSTALLED_APPS = ["collectfast"] + INSTALLED_APPS  # noqa F405
+COLLECTFAST_STRATEGY = "django.core.files.storage.FileSystemStorage"
 
 # LOGGING
 # ------------------------------------------------------------------------------
@@ -182,4 +183,5 @@ LOGGING = {
 }
 
 # Your stuff...
+
 # ------------------------------------------------------------------------------
