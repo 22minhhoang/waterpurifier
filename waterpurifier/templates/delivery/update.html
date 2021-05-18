@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" class="btn btn-warning" value="Cập nhật" />
+    <a class="btn btn-danger ml-5" href="{% url delete_url object.pk %}">Xóa</a>
+    <a class="btn btn-primary ml-5" href="{% url back_url %}">Back</a>
+    {% if add_order_url %}
+      <a class="btn btn-primary ml-5" href="{% url add_order_url object.pk %}">Thêm đơn hàng</a>
+    {% endif %}
+  </form>
+{% endblock content %}

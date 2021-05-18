@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ page_title }}{%endblock %}
+
+{% block content %}
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-start">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% endif %}
+
+      {% for page_num in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_num == page_obj.number %}active{% endif %}">
+          <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+        </li>
+      {% endfor %}
+
+      {% if page_obj.has_next  %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {% endif %}
+
+      {% if type != 'order' %}
+        <li>
+          <a class="btn btn-primary ml-5" href="{% url create_url %}">Thêm</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <div style="height: 700px; overflow: auto;">
+    <table class="table table-sm table-hover">
+      <thead class="table-light">
+        {% if type == 'customer' %}
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Số điện thoại</th>
+            <th scope="col">Địa chỉ</th>
+            <th scope="col">Email</th>
+          </tr>
+        {% elif type == 'device' %}
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Model</th>
+            <th scope="col">Năm sản xuất</th>
+          </tr>
+        {% elif type == 'staff' %}
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Số điện thoại</th>
+            <th scope="col">Địa chỉ</th>
+            <th scope="col">Email</th>
+          </tr>
+        {% elif type == 'order' %}
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Khách hàng</th>
+            <th scope="col">Thiết bị</th>
+            <th scope="col">Ngày giao hàng</th>
+            <th scope="col">Trạng thái</th>
+          </tr>
+        {% endif %}
+      </thead>
+      <tbody>
+        {% if customers  %}
+          {% for customer in customers  %}
+            <tr id="{{ customer.pk }}">
+              <th scope="row"><a class="nav-link" href="{% url update_url customer.pk %}">{{ page_obj.start_index|add:forloop.counter0 }}</a></th>
+              <td>{{ customer.name }}</td>
+              <td>{{ customer.phone_number }}</td>
+              <td>{{ customer.address }}</td>
+              <td>{{ customer.email }}</td>
+            </tr>
+          {% endfor %}
+        {% elif devices %}
+          {% for device in devices  %}
+            <tr id="{{ device.pk }}">
+              <th scope="row"><a class="nav-link" href="{% url update_url device.pk %}">{{ page_obj.start_index|add:forloop.counter0 }}</a></th>
+              <td>{{ device.name }}</td>
+              <td>{{ device.model }}</td>
+              <td>{{ device.year_of_manufacture|date:"d/m/Y" }}</td>
+            </tr>
+          {% endfor %}
+        {% elif staffs  %}
+          {% for staff in staffs  %}
+            <tr id="{{ staff.pk }}">
+              <th scope="row"><a class="nav-link" href="{% url update_url staff.pk %}">{{ page_obj.start_index|add:forloop.counter0 }}</a></th>
+              <td>{{ staff.name }}</td>
+              <td>{{ staff.phone_number }}</td>
+              <td>{{ staff.address }}</td>
+              <td>{{ staff.email }}</td>
+            </tr>
+          {% endfor %}
+        {% elif orders  %}
+          {% for order in orders  %}
+            <tr id="{{ order.pk }}">
+              <th scope="row"><a class="nav-link" href="{% url update_url order.pk %}">{{ page_obj.start_index|add:forloop.counter0 }}</a></th>
+              <td>{{ order.customer }}</td>
+              <td>{{ order.device }}</td>
+              <td>{{ order.delivery_date|date:"d/m/Y" }}</td>
+              <td>{{ order.get_completed_display }}</td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+{% endblock content %}

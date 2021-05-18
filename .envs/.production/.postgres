@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=waterpurifier
+POSTGRES_USER=byKpluivhuedhqhePntliuwHSNydLbnC
+POSTGRES_PASSWORD=5pRtPA9fWqTZW7TYy4swzfU0G7kyWdCkhXKdCSKxcYqNXP4LG7lmLim9w27O88fy
