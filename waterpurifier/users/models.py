@@ -8,7 +8,7 @@ class User(AbstractUser):
     """Default user for WaterPurifier."""
 
     #: First and last name do not cover name patterns around the globe
-    name = CharField(_("Tên nhân viên"), blank=True, max_length=255)
+    name = CharField(_("Tên nhân viên"), max_length=255)
     first_name = None  # type: ignore
     last_name = None  # type: ignore
     GENDERS = (("M", "Ông"), ("F", "Bà"))

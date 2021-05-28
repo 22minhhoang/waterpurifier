@@ -5,3 +5,8 @@ __version_info__ = tuple(
         for num in __version__.replace("-", ".", 1).split(".")
     ]
 )
+
+# Celery
+from .celery import app as celery_app
+
+__all__ = ("celery_app",)

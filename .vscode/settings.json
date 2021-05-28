@@ -1,6 +1,6 @@
 {
     "python.linting.pylintEnabled": false,
-    "python.pythonPath": "C:\\Users\\minhh\\anaconda3\\envs\\Django\\python.exe",
+    "python.pythonPath": "C:\\Users\\minhh\\Envs\\django\\Scripts\\python.exe",
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
     "files.associations": {
@@ -21,6 +21,6 @@
     },
     "[django-html]": {
         "editor.formatOnSave": true,
-        "editor.defaultFormatter": "HookyQR.beautify"
-    }
+    },
+    "restructuredtext.confPath": "${workspaceFolder}\\docs"
 }

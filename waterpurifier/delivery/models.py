@@ -1,19 +1,37 @@
 from django.contrib.auth import get_user_model
-from django.db import models
+from django.db.models import (
+    CASCADE,
+    CharField,
+    DateField,
+    DateTimeField,
+    ForeignKey,
+    Model,
+    SmallIntegerField,
+)
 from django.urls import reverse
 
 User = get_user_model()
 
 
 # Create your models here.
-class Customer(models.Model):
-    name = models.CharField(max_length=100)
+class Customer(Model):
+    name = CharField(max_length=100)
     GENDERS = (("M", "Ông"), ("F", "Bà"))
-    gender = models.CharField(max_length=1, choices=GENDERS)
-    birth_date = models.DateField(null=True, blank=True)
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
-    address = models.CharField(max_length=200, null=True, blank=True)
-    email = models.CharField(max_length=50, null=True, blank=True)
+    gender = CharField(max_length=1, choices=GENDERS)
+    birth_date = DateField(null=True, blank=True)
+    phone_number = CharField(max_length=20, blank=True)
+    PROVINCES = (
+        (73, "Quảng Bình"),
+        (74, "Quảng Trị"),
+        (75, "Thừa Thiên Huế"),
+        (43, "Đà Nẵng"),
+        (92, "Quảng Nam"),
+        (76, "Quảng Ngãi"),
+        (0, "Khác"),
+    )
+    province = SmallIntegerField(choices=PROVINCES, blank=True)
+    address_detail = CharField(max_length=200, blank=True)
+    email = CharField(max_length=50, blank=True)
 
     def __str__(self) -> str:
         return self.name
@@ -22,14 +40,14 @@ class Customer(models.Model):
         return reverse("delivery:customer-update", kwargs={"pk": self.pk})
 
 
-class Device(models.Model):
-    name = models.CharField(max_length=100)
-    model = models.CharField(max_length=50, null=True, blank=True)
-    year_of_manufacture = models.DateField(
+class Device(Model):
+    name = CharField(max_length=100)
+    model_code = CharField(max_length=50, blank=True)
+    year_of_manufacture = DateField(
         null=True,
         blank=True,
     )
-    comment = models.CharField(max_length=200, null=True, blank=True)
+    comment = CharField(max_length=200, blank=True)
 
     def __str__(self) -> str:
         return self.name
@@ -38,17 +56,22 @@ class Device(models.Model):
         return reverse("delivery:device-update", kwargs={"pk": self.pk})
 
 
-class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    device = models.ForeignKey(Device, on_delete=models.CASCADE, null=True, blank=True)
-    staff = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    delivery_date = models.DateField()
-    updated_date = models.DateTimeField(
+class Component(Model):
+    name = CharField(max_length=100)
+    comment = CharField(max_length=200, blank=True)
+
+
+class Order(Model):
+    customer = ForeignKey(Customer, on_delete=CASCADE)
+    device = ForeignKey(Device, on_delete=CASCADE, null=True, blank=True)
+    staff = ForeignKey(User, on_delete=CASCADE, null=True, blank=True)
+    delivery_date = DateField()
+    updated_date = DateTimeField(
         auto_now=True,
     )
     STATUS = (("P", "Chưa hoàn thành"), ("F", "Hoàn thành"))
-    completed = models.CharField(max_length=1, choices=STATUS, default="P")
-    comment = models.CharField(max_length=200, null=True, blank=True)
+    completed = CharField(max_length=1, choices=STATUS, default="P")
+    comment = CharField(max_length=200, blank=True)
 
     def __str__(self) -> str:
         return "[%s] %s - %s" % (self.updated_date, self.customer, self.device)

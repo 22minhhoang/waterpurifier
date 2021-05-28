@@ -269,6 +269,8 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_ADAPTER = "waterpurifier.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = "waterpurifier.users.adapters.SocialAccountAdapter"
+# My configuare
+ACCOUNT_FORMS = {"signup": "waterpurifier.users.forms.UserSignUpForm"}
 
 # django-rest-framework
 # -------------------------------------------------------------------------------

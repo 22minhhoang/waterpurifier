@@ -1,7 +1,8 @@
 from datetime import date, timedelta
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+# from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages import add_message
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models.functions import Upper

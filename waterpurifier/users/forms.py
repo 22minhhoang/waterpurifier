@@ -31,17 +31,20 @@ class UserUpdateForm(ModelForm):
         }
 
 
-# class UserSignUpForm(SignupForm):
-#     class Meta:
-#         exclude = ["email"]
+class UserSignUpForm(SignupForm):
+    def __init__(self, *args, **kwargs):
+        super(UserSignUpForm, self).__init__(*args, **kwargs)
+        # if "email" in self.fields:
+        #     del self.fields["email"]
+        # self.fields["name"] = CharField(label="Tên nhân viên")
 
-#     def save(self, request):
+    def save(self, request):
 
-#         # Ensure you call the parent class's save.
-#         # .save() returns a User object.
-#         user = super(UserSignUpForm, self).save(request)
+        # Ensure you call the parent class's save.
+        # .save() returns a User object.
+        user = super(UserSignUpForm, self).save(request)
 
-#         # Add your own processing here.
+        # Add your own processing here.
 
-#         # You must return the original result.
-#         return user
+        # You must return the original result.
+        return user
