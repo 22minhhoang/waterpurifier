@@ -274,3 +274,4 @@ waterpurifier/media/
 .env
 .envs/*
 !.envs/.local/
+/.vscode

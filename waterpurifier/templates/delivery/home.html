@@ -1,6 +1,8 @@
 {% extends "base.html" %}
-
 {% block title %}Trang chủ{% endblock %}
-
 {% block content %}
+  {% if objects %}
+  {% else %}
+  <p>Hiện không có thông báo nào</p>
+  {% endif %}
 {% endblock content %}

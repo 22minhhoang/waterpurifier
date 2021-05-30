@@ -52,15 +52,9 @@ INSTALLED_APPS += ["django_extensions"]  # noqa F405
 
 # Your stuff...
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "waterpurifier",
-        "USER": "postgres",
-        "PASSWORD": "ky2610",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'maylocnuocDB.sqlite3',
     }
 }
-
-REDIS_URL = ""
 # ------------------------------------------------------------------------------

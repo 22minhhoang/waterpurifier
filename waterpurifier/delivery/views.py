@@ -1,13 +1,12 @@
 from datetime import date, timedelta
 
-from django.contrib import messages
-
-# from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.messages import add_message
+# from django.contrib import messages
+# from django.contrib.messages import add_message
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.functions import Upper
-from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
@@ -16,35 +15,22 @@ from waterpurifier.delivery.models import Customer, Device, Order
 
 
 # Create your views here.
-def home(request):
-    today = date.today()
-    limit = today + timedelta(weeks=1)
-    # for order in Order.objects.filter(delivery_date__gte=today).filter(delivery_date__lte=limit).order_by('delivery_date'):
-    orders = (
-        Order.objects.filter(delivery_date__gte=today, delivery_date__lte=limit)
-        .exclude(completed__exact="F")
-        .order_by("delivery_date")
-    )
-    if orders:
-        for order in orders:
-            gen = "ông"
-            if order.customer.gender == "F":
-                gen = "bà"
-            mesType = messages.INFO
-            if order.delivery_date == today:
-                mesType = messages.WARNING
-            add_message(
-                request,
-                mesType,
-                f"[{order.delivery_date:%d/%m/%Y}] {gen} {order.customer}: {order.device}",
-            )
-    else:
-        add_message(request, messages.INFO, "Hiện tại không có thông báo nào")
+class Home(LoginRequiredMixin, TemplateView):
+    template_name = "delivery/home.html"
 
-    return render(request, "delivery/home.html")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = date.today()
+        limit = today + timedelta(weeks=1)
+        context["objects"] = (
+            Order.objects.filter(delivery_date__gte=today, delivery_date__lte=limit)
+            .exclude(completed__exact="F")
+            .order_by("delivery_date")
+        )
+        return context
 
 
-class CustomerListView(ListView):
+class CustomerListView(LoginRequiredMixin, ListView):
     # model = Customer
     paginate_by = 20
     queryset = Customer.objects.order_by(Upper("name"))
@@ -62,7 +48,7 @@ class CustomerListView(ListView):
         return context
 
 
-class CustomerCreateView(SuccessMessageMixin, CreateView):
+class CustomerCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Customer
     form_class = CustomerForm
     template_name = "delivery/create.html"
@@ -78,7 +64,7 @@ class CustomerCreateView(SuccessMessageMixin, CreateView):
         return context
 
 
-class CustomerUpdateView(SuccessMessageMixin, UpdateView):
+class CustomerUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Customer
     form_class = CustomerForm
     template_name = "delivery/update.html"
@@ -96,7 +82,7 @@ class CustomerUpdateView(SuccessMessageMixin, UpdateView):
         return context
 
 
-class CustomerDeleteView(SuccessMessageMixin, DeleteView):
+class CustomerDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Customer
     form_class = CustomerForm
     template_name = "delivery/delete.html"
@@ -112,7 +98,7 @@ class CustomerDeleteView(SuccessMessageMixin, DeleteView):
         return context
 
 
-class AddOrderView(SuccessMessageMixin, CreateView):
+class AddOrderView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Order
     form_class = OrderForm
     template_name = "delivery/create.html"
@@ -129,7 +115,7 @@ class AddOrderView(SuccessMessageMixin, CreateView):
         return context
 
 
-class DeviceListView(ListView):
+class DeviceListView(LoginRequiredMixin, ListView):
     context_object_name = "devices"
     queryset = Device.objects.order_by(Upper("name"))
     paginate_by = 20
@@ -146,7 +132,7 @@ class DeviceListView(ListView):
         return context
 
 
-class DeviceCreateView(SuccessMessageMixin, CreateView):
+class DeviceCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Device
     form_class = DeviceForm
     template_name = "delivery/create.html"
@@ -162,7 +148,7 @@ class DeviceCreateView(SuccessMessageMixin, CreateView):
         return context
 
 
-class DeviceUpdateView(SuccessMessageMixin, UpdateView):
+class DeviceUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Device
     form_class = DeviceForm
     template_name = "delivery/update.html"
@@ -179,7 +165,7 @@ class DeviceUpdateView(SuccessMessageMixin, UpdateView):
         return context
 
 
-class DeviceDeleteView(SuccessMessageMixin, DeleteView):
+class DeviceDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Device
     form_class = DeviceForm
     template_name = "delivery/delete.html"
@@ -195,7 +181,7 @@ class DeviceDeleteView(SuccessMessageMixin, DeleteView):
         return context
 
 
-class OrderListView(ListView):
+class OrderListView(LoginRequiredMixin, ListView):
     # model = Order
     context_object_name = "orders"
     queryset = Order.objects.order_by("-delivery_date")
@@ -212,7 +198,7 @@ class OrderListView(ListView):
         return context
 
 
-class OrderUpdateView(SuccessMessageMixin, UpdateView):
+class OrderUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Order
     form_class = OrderForm
     template_name = "delivery/update.html"
@@ -229,7 +215,7 @@ class OrderUpdateView(SuccessMessageMixin, UpdateView):
         return context
 
 
-class OrderDeleteView(SuccessMessageMixin, DeleteView):
+class OrderDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Order
     form_class = OrderForm
     template_name = "delivery/delete.html"

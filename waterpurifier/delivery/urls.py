@@ -1,24 +1,13 @@
 from django.urls import path
 
-from waterpurifier.delivery.views import (
-    AddOrderView,
-    CustomerCreateView,
-    CustomerDeleteView,
-    CustomerListView,
-    CustomerUpdateView,
-    DeviceCreateView,
-    DeviceDeleteView,
-    DeviceListView,
-    DeviceUpdateView,
-    OrderDeleteView,
-    OrderListView,
-    OrderUpdateView,
-    home,
-)
+from waterpurifier.delivery.views import (AddOrderView, CustomerCreateView, CustomerDeleteView, CustomerListView,
+                                          CustomerUpdateView, DeviceCreateView, DeviceDeleteView, DeviceListView,
+                                          DeviceUpdateView, OrderDeleteView, OrderListView, OrderUpdateView, Home)
+
 
 app_name = "delivery"
 urlpatterns = [
-    path("", home, name="home"),
+    path("", Home.as_view(), name="home"),
     path("customers/", CustomerListView.as_view(), name="customer-list"),
     path("customers/create/", CustomerCreateView.as_view(), name="customer-create"),
     path("customers/<int:pk>/", CustomerUpdateView.as_view(), name="customer-update"),
